@@ -1,8 +1,9 @@
 import tweepy
-import authenticator as auth
+import crawler.authenticator as auth
 import json
 import time
 from os.path import join
+import os
 
 api = tweepy.API(auth.authenticate(), wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 cursor = tweepy.Cursor(api.search,
@@ -11,25 +12,23 @@ cursor = tweepy.Cursor(api.search,
                        lang='en',
                        result_typr='recent',
                        include_entities=True).items()
-jsonDir = 'tngTweets'
+jsonDir = 'resources/rawTweets/tngTweets'
 
 
 def now():
     return int(round(time.time()))
 
 
-def checkRls():
-    """Checks rate_limit_status of Twitter Search API and returns its value."""
-    return api.rate_limit_status()['resources']['search']['/search/tweets']['remaining']
-
-
 def crawlTwitter(cursor):
-    rootFolder = jsonDir + str(now())
+    rootFolder = jsonDir + '_' + str(now())
+    if not os.path.exists(rootFolder):
+        os.makedirs(rootFolder)
+
     count = 1
 
     def newJsonFile():
         """Creates a new Json File and inserts initial Json."""
-        f = open(join(rootFolder, 'tweetsRaw-' + str(now()) + '.json'))
+        f = open(join(rootFolder, 'tweets-' + str(now()) + '.json'), 'a')
         f.write('[\n')
         return f
 
@@ -43,15 +42,15 @@ def crawlTwitter(cursor):
     f.write(json.dumps(cursor.next()._json) + '\n')
 
     for tweet in cursor:
-        print(count)
-        print(checkRls)
         count += 1
         f.write(',' + json.dumps(tweet._json) + '\n')
-        if(checkRls == 0):
+        if(count % 1000 == 0):
+            print(count)
             closeJson(f)
             f = newJsonFile()
 
     closeJson(f)
 
 
-crawlTwitter(cursor)
+def crawl():
+    crawlTwitter(cursor)
