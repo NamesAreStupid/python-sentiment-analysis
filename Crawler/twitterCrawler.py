@@ -29,9 +29,7 @@ def crawlTwitter(cursor):
 
     def newJsonFile():
         """Creates a new Json File and inserts initial Json."""
-        nonlocal currentFile
-        currentFile = join(rootFolder, 'tweetsRaw-' + str(now()) + '.json')
-        f = open(currentFile)
+        f = open(join(rootFolder, 'tweetsRaw-' + str(now()) + '.json'))
         f.write('[\n')
         return f
 
