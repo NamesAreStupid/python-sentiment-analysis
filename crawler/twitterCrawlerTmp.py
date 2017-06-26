@@ -4,7 +4,7 @@ import json
 import time
 from os.path import join
 import os
-import nltk
+from nltk.twitter import common
 
 api = tweepy.API(auth.authenticate(), wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 cursor = tweepy.Cursor(api.search,
@@ -63,7 +63,7 @@ def twitterToCsv(inputfolder, outputFolder):
 
     for file in os.listdir(inputfolder):
         print(file)
-        # nltk.twitter.common.json2csv
+        common.json2csv(file, 'tweets_' + file + '.csv', ['text'])
 
 
 def crawl():
