@@ -9,7 +9,8 @@ def preprocess():
     sourceDir = 'resources/rawTweets/ethereumTweets_1498430250/'
     outputFile = 'resources/preprocessing/processedTweets.json'
 
-    pl = pipeline.makePipeline(selectAttributes, tokenizeTweets)
+    pl = pipeline.makePipeline(selectAttributes,
+                               tokenizeTweets)
     processedTweets = list(pl(consolidateTweets(sourceDir)))
     print(len(processedTweets), ' tweets processed.')
 
