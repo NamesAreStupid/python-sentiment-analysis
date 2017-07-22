@@ -20,7 +20,6 @@ def preprocess():
 def consolidateTweets(dir):
     for file in os.listdir(dir):
         with open(os.path.join(dir + file)) as f:
-            # print(f)
             try:
                 tweetJson = json.load(f)
                 for tweet in tweetJson:
@@ -36,12 +35,10 @@ def selectAttributes(tweets):
     attributes = ['text']
     for tweet in tweets:
         yield {attribute: tweet[attribute] for attribute in attributes}
-    # return ({attribute: tweet[attribute] for attribute in attributes} for tweet in tweets)
 
 
 def tokenizeTweets(tweets):
     tknzr = TweetTokenizer()
     for tweet in tweets:
-        # tweet['tokenizedText'] = tknzr.tokenize(tweet['text'])
         tweet['text'] = tknzr.tokenize(tweet['text'])
         yield tweet
