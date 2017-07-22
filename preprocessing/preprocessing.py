@@ -6,18 +6,15 @@ from nltk.tokenize import TweetTokenizer
 
 def preprocess():
     print('Starting preprocessing.')
-    sourceFile = 'resources/rawTweets/gotTweets_1498248795/tweets-1498248795.json'
-    # sourceDir = 'resources/rawTweets/gotTweets_1498248795/'
     sourceDir = 'resources/rawTweets/ethereumTweets_1498430250/'
-    with open(sourceFile) as f:
-        tweets = json.load(f)
+    outputFile = 'resources/preprocessing/processedTweets.json'
 
-        pl = pipeline.makePipeline(selectAttributes, tokenizeTweets)
-        processedTweets = list(pl(consolidateTweets(sourceDir)))
-        print(len(processedTweets), ' tweets processed.')
+    pl = pipeline.makePipeline(selectAttributes, tokenizeTweets)
+    processedTweets = list(pl(consolidateTweets(sourceDir)))
+    print(len(processedTweets), ' tweets processed.')
 
-        with open('resources/test.json', 'w') as out:
-            out.write(json.dumps(processedTweets))
+    with open(outputFile, 'w') as out:
+        out.write(json.dumps(processedTweets))
 
 
 def consolidateTweets(dir):
