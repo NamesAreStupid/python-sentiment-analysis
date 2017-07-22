@@ -1,5 +1,6 @@
 import crawler.twitterCrawlerTmp as crawler
-
+import preprocessing.preprocessing as preprocessing
 
 #crawler.crawl()
-crawler.twitterToCsv('resources/rawTweets/gotTweets_1498248795', 'csvrawTweets_1498248795')
+#crawler.twitterToCsv('resources/rawTweets/gotTweets_1498248795', 'csvrawTweets_1498248795')
+preprocessing.preprocess()
