@@ -3,26 +3,16 @@ import os
 from util import pipeline
 from nltk.tokenize import TweetTokenizer
 from nltk import pos_tag
-from functools import reduce
 
 
 def preprocess():
     print('Starting preprocessing.')
-    sourceDir = 'resources/rawTweets/gotTweets_1498248795/'
+    sourceDir = 'resources/rawTweets/ethereumTweets_1498430250/'
     outputFile = 'resources/preprocessing/processedTweets.json'
 
-    # pl = pipeline.makeFunctionalPipeline(selectAttributes, tokenizeTweets)
-    consolidated = consolidateTweets(sourceDir)
-    # plined = pl(consolidated)
-    # processedTweets = list(plined)
-
-    # processedTweets = list(map(reduce(lambda x, y: x(y), [selectAttributes, tokenizeTweets]), consolidated))
-    # processedTweets = list(map(lambda x: tokenizeTweets(selectAttributes(x)), consolidated))
-    # processedTweets = list(map(lambda x: reduce(lambda y, z: z(y), [tokenizeTweets, selectAttributes], x), consolidated))
-
-    pl = pipeline.makeFunctionalPipeline(selectAttributes, tokenizeTweets)
-    processedTweets = list(pl(consolidated))
-
+    pl = pipeline.makePipeline(selectAttributes,
+                               tokenizeTweets)
+    processedTweets = list(pl(consolidateTweets(sourceDir)))
     print(len(processedTweets), ' tweets processed.')
 
     with open(outputFile, 'w') as out:
@@ -43,15 +33,17 @@ def consolidateTweets(dir):
                 print(err)
 
 
-def selectAttributes(tweet):
+def selectAttributes(tweets):
     attributes = ['text']
-    return {attribute: tweet[attribute] for attribute in attributes}
+    for tweet in tweets:
+        yield {attribute: tweet[attribute] for attribute in attributes}
 
 
-def tokenizeTweets(tweet):
+def tokenizeTweets(tweets):
     tknzr = TweetTokenizer()
-    tweet['text'] = tknzr.tokenize(tweet['text'])
-    return tweet
+    for tweet in tweets:
+        tweet['text'] = tknzr.tokenize(tweet['text'])
+        yield tweet
 
 
 def posTag(tweets):
