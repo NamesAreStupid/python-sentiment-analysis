@@ -20,7 +20,7 @@ def preprocess():
     # processedTweets = list(map(lambda x: tokenizeTweets(selectAttributes(x)), consolidated))
     # processedTweets = list(map(lambda x: reduce(lambda y, z: z(y), [tokenizeTweets, selectAttributes], x), consolidated))
 
-    pl = pipeline.makeFunctionalPipeline(selectAttributes, tokenizeTweets)
+    pl = pipeline.makePipeline(selectAttributes, tokenizeTweets)
     processedTweets = list(pl(consolidated))
 
     print(len(processedTweets), ' tweets processed.')
