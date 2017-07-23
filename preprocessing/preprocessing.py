@@ -1,6 +1,6 @@
 import json
 import os
-from util import pipeline
+from util.pipeline import makePipeline
 from nltk.tokenize import TweetTokenizer
 from nltk import pos_tag
 from functools import reduce
@@ -13,7 +13,7 @@ def preprocess():
 
     consolidatedTweets = consolidateTweets(sourceDir)
 
-    pl = pipeline.makePipeline(selectAttributes, tokenizeTweets)
+    pl = makePipeline(selectAttributes, tokenizeTweets)
     processedTweets = list(pl(consolidatedTweets))
 
     print(len(processedTweets), ' tweets processed.')
@@ -47,5 +47,5 @@ def tokenizeTweets(tweet):
     return tweet
 
 
-def posTag(tweets):
+def posTag(tweet):
     pass
