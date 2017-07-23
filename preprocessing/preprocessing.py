@@ -11,17 +11,10 @@ def preprocess():
     sourceDir = 'resources/rawTweets/gotTweets_1498248795/'
     outputFile = 'resources/preprocessing/processedTweets.json'
 
-    # pl = pipeline.makeFunctionalPipeline(selectAttributes, tokenizeTweets)
-    consolidated = consolidateTweets(sourceDir)
-    # plined = pl(consolidated)
-    # processedTweets = list(plined)
-
-    # processedTweets = list(map(reduce(lambda x, y: x(y), [selectAttributes, tokenizeTweets]), consolidated))
-    # processedTweets = list(map(lambda x: tokenizeTweets(selectAttributes(x)), consolidated))
-    # processedTweets = list(map(lambda x: reduce(lambda y, z: z(y), [tokenizeTweets, selectAttributes], x), consolidated))
+    consolidatedTweets = consolidateTweets(sourceDir)
 
     pl = pipeline.makePipeline(selectAttributes, tokenizeTweets)
-    processedTweets = list(pl(consolidated))
+    processedTweets = list(pl(consolidatedTweets))
 
     print(len(processedTweets), ' tweets processed.')
 
