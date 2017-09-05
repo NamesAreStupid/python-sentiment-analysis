@@ -4,7 +4,7 @@ import json
 import time
 from os.path import join
 import os
-import nltk
+
 
 api = tweepy.API(auth.authenticate(), wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 cursor = tweepy.Cursor(api.search,
@@ -23,7 +23,6 @@ def now():
 def crawlTwitter(cursor, outputFolder):
     if not os.path.exists(outputFolder):
         os.makedirs(outputFolder)
-    count = 1
 
     def newJsonFile():
         """Creates a new Json File and inserts initial Json."""
@@ -44,9 +43,8 @@ def crawlTwitter(cursor, outputFolder):
     f.write(json.dumps(cursor.next()._json) + '\n')
 
     print('starting twitter crawl')
-    for tweet in cursor:
+    for count, tweet in enumerate(cursor):
         print(count)
-        count += 1
         f.write(',' + json.dumps(tweet._json) + '\n')
         if(count % 2500 == 0):
             print('create new file')
